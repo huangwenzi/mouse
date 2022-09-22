@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication
+import PyQt5.QtWidgets as QtWidgets
 
 import view.main_view as main_view
 
@@ -10,7 +10,7 @@ import view.main_view as main_view
 
 
 def run():
-    app = QApplication([])
+    app = QtWidgets.QApplication([])
     
     
     # 不赋值界面会一闪而过，被回收

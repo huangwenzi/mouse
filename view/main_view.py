@@ -1,8 +1,8 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
+import PyQt5.QtWidgets as QtWidgets
+import PyQt5.QtCore as QtCore
+import PyQt5.QtGui as QtGui
+import pynput.keyboard as keyboard
 import threading
-from pynput import keyboard
 
 import cfg.game as game_cfg
 import lib.view_lib as view_lib
@@ -22,34 +22,34 @@ t.start()
 
 
 # 主界面
-class MainView(QMainWindow):
+class MainView(QtWidgets.QMainWindow):
     # 当前选中的一级菜单
-    menu_select_1:QPushButton = None
+    menu_select_1:QtWidgets.QPushButton = None
     # 当前选中的二级菜单
-    menu_select_2:QLabel = None
+    menu_select_2:QtWidgets.QLabel = None
     
     def __init__(self, *args):
         super(MainView, self).__init__(*args)
         self.setWindowTitle('主界面')
         # 窗口最大化
-        desktop = QApplication.desktop()
+        desktop = QtWidgets.QApplication.desktop()
         rect = desktop.availableGeometry()
         self.setGeometry(rect)
         self.move(0,0)
         # 去掉边框
-        self.setWindowFlags(Qt.FramelessWindowHint)
-        self.setAttribute(Qt.WA_TranslucentBackground)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         # 放一个label在后面
-        self.bg_label = QLabel("", self)
+        self.bg_label = QtWidgets.QLabel("", self)
         self.bg_label.resize(desktop.width(), desktop.height())
-        op = QGraphicsOpacityEffect()
+        op = QtWidgets.QGraphicsOpacityEffect()
         op.setOpacity(0.1)
         self.bg_label.setGraphicsEffect(op)
         self.bg_label.setAutoFillBackground(True)
         
         # 功能按钮
         # 添加轨迹鼠标
-        self.trajectory_button = QPushButton("轨迹鼠标", self)
+        self.trajectory_button = QtWidgets.QPushButton("轨迹鼠标", self)
         self.trajectory_button.resize(game_cfg.button_size[0], game_cfg.button_size[1])
         self.trajectory_button.move(0,0)
         self.trajectory_button.clicked.connect(self.click_trajectory)

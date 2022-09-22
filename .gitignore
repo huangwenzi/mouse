@@ -1,3 +1,7 @@
 /__pycache__
 /.vscode
 *.pyc
+/PyQt5
+/main_gui.spec
+/build
+/dist

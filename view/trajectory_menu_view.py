@@ -1,8 +1,7 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
+import PyQt5.QtWidgets as QtWidgets
+import PyQt5.QtCore as QtCore
+import PyQt5.QtGui as QtGui
 import pyautogui
-import time
 
 
 import cfg.game as game_cfg
@@ -27,35 +26,35 @@ class Enum(object):
 
 
 # 轨迹鼠标菜单
-class TrajectoryMenuView(QLabel):
+class TrajectoryMenuView(QtWidgets.QLabel):
     select_menu_1 = 0   # 选择的菜单1
     now_trajectory_id = 1
     
     def __init__(self, *args):
         super(TrajectoryMenuView, self).__init__(*args)
         # 基础设置
-        desktop = QApplication.desktop()
+        desktop = QtWidgets.QApplication.desktop()
         self.resize(desktop.width() - game_cfg.button_size[0], desktop.height())
         self.move(game_cfg.button_size[0], 0)
         
         # 初始化按钮
-        self.button_add = QPushButton("添加轨迹", self)
+        self.button_add = QtWidgets.QPushButton("添加轨迹", self)
         self.button_add.resize(game_cfg.button_size[0], game_cfg.button_size[1])
         self.button_add.move(0,0)
         self.button_add.clicked.connect(self.click_add)
-        self.button_run = QPushButton("运行轨迹", self)
+        self.button_run = QtWidgets.QPushButton("运行轨迹", self)
         self.button_run.resize(game_cfg.button_size[0], game_cfg.button_size[1])
         self.button_run.move(0,game_cfg.button_size[1])
         self.button_run.clicked.connect(self.click_run)
-        self.button_del = QPushButton("删除单个", self)
+        self.button_del = QtWidgets.QPushButton("删除单个", self)
         self.button_del.resize(game_cfg.button_size[0], game_cfg.button_size[1])
         self.button_del.move(0,game_cfg.button_size[1]*2)
         self.button_del.clicked.connect(self.click_del)
-        self.button_plan = QPushButton("重排编号", self)
+        self.button_plan = QtWidgets.QPushButton("重排编号", self)
         self.button_plan.resize(game_cfg.button_size[0], game_cfg.button_size[1])
         self.button_plan.move(0,game_cfg.button_size[1]*3)
         self.button_plan.clicked.connect(self.click_plan)
-        self.button_change = QPushButton("修改轨迹", self)
+        self.button_change = QtWidgets.QPushButton("修改轨迹", self)
         self.button_change.resize(game_cfg.button_size[0], game_cfg.button_size[1])
         self.button_change.move(0,game_cfg.button_size[1]*4)
         self.button_change.clicked.connect(self.click_change)
@@ -81,7 +80,7 @@ class TrajectoryMenuView(QLabel):
         # self.add_pix = QPixmap()
         # self.add_pix.load("./image/tar.png")
         # 字体
-        self.def_font = QFont()
+        self.def_font = QtGui.QFont()
         self.def_font.setFamily("Arial") #括号里可以设置成自己想要的其它字体
         self.def_font.setPointSize(18)   #括号里的数字可以设置成自己想要的字体大小
         
@@ -233,13 +232,13 @@ class TrajectoryMenuView(QLabel):
         # 初始化轨迹点
         add_trajectory_obj = TrajectoryObj(self)
         add_trajectory_obj.trajectory_id = self.now_trajectory_id
-        add_trajectory_obj.pos = QCursor.pos()
+        add_trajectory_obj.pos = QtGui.QCursor.pos()
         add_trajectory_obj.wait_time = int(self.trajectory_cfg_view.edit_move_time.text())
         add_trajectory_obj.resize(30,30)
         add_trajectory_obj.setText("%s"%(add_trajectory_obj.trajectory_id))
         add_trajectory_obj.move(x - game_cfg.button_size[0] - 30/2, y - 30/2)
         add_trajectory_obj.setFont(self.def_font)
-        add_trajectory_obj.setAlignment(Qt.AlignCenter)
+        add_trajectory_obj.setAlignment(QtCore.Qt.AlignCenter)
         add_trajectory_obj.show()
         self.now_trajectory_id += 1
         self.trajectory_list.append(add_trajectory_obj)
@@ -280,16 +279,16 @@ class TrajectoryMenuView(QLabel):
 
 
 # 轨迹添加背景label
-class Trajectory_add_label(QLabel):
+class Trajectory_add_label(QtWidgets.QLabel):
     def __init__(self, *args):
         super(Trajectory_add_label, self).__init__(*args)
         
     # 鼠标事件
-    def mousePressEvent(self, event:QMouseEvent):
-        if event.buttons() == Qt.LeftButton:  # 左键按下
+    def mousePressEvent(self, event:QtGui.QMouseEvent):
+        if event.buttons() == QtGui.Qt.LeftButton:  # 左键按下
             # print("单击鼠标左键")  # 响应测试语句
             # 触发上面的添加
-            pos = QCursor.pos()
+            pos = QtGui.QCursor.pos()
             self.parent().add_trajectory_obj(pos.x(), pos.y())
         # elif event.buttons() == Qt.RightButton:  # 右键按下
         #     print("单击鼠标右键")  # 响应测试语句
@@ -306,16 +305,16 @@ class Trajectory_add_label(QLabel):
 
 
 # 轨迹对象
-class TrajectoryObj(QLabel):
+class TrajectoryObj(QtWidgets.QLabel):
     trajectory_id = 0      # id
     wait_time = 1   # 等待时间
-    pos:QPoint = None      # 绝对坐标
+    pos:QtCore.QPoint = None      # 绝对坐标
     def __init__(self, *args):
         super(TrajectoryObj, self).__init__(*args)
     
     # 重写信号抛出
     def mouseReleaseEvent(self, QMouseEvent):
-        if QMouseEvent.button() == Qt.LeftButton:
+        if QMouseEvent.button() == QtCore.Qt.LeftButton:
             # 被点击
             self.parent().click_trajectory(self)
 
