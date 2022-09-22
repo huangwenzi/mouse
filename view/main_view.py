@@ -1,10 +1,25 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+import threading
+from pynput import keyboard
 
 import cfg.game as game_cfg
 import lib.view_lib as view_lib
 import view.trajectory_menu_view as trajectory_menu_view
+
+main_view = None
+
+# 起线程监听键盘事件
+def on_release(key):
+    if main_view:
+        main_view.click_key(key)
+def click_key():
+    with keyboard.Listener(on_release=on_release) as listener:
+        listener.join()
+t = threading.Thread(target=click_key, name='keyboard', args=())
+t.start()
+
 
 # 主界面
 class MainView(QMainWindow):
@@ -21,10 +36,8 @@ class MainView(QMainWindow):
         rect = desktop.availableGeometry()
         self.setGeometry(rect)
         self.move(0,0)
-        # 窗口透明
-        # self.setWindowOpacity(0.3)
-        # self.setWindowFlags(Qt.WindowStaysOnTopHint)    # 置顶
-        self.setWindowFlags(Qt.FramelessWindowHint)     # 去掉边框
+        # 去掉边框
+        self.setWindowFlags(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
         # 放一个label在后面
         self.bg_label = QLabel("", self)
@@ -41,6 +54,8 @@ class MainView(QMainWindow):
         self.trajectory_button.move(0,0)
         self.trajectory_button.clicked.connect(self.click_trajectory)
         self.show()
+        global main_view
+        main_view = self
     
     # 清除其他菜单选项
     def clear_select(self):
@@ -57,23 +72,15 @@ class MainView(QMainWindow):
         self.clear_select()
         # 设置功能选中
         view_lib.button_select(self.trajectory_button)
+        
+        self.menu_select_1 = self.trajectory_button
         # 弹出二级菜单
         self.menu_select_2 = trajectory_menu_view.TrajectoryMenuView(self)
         self.menu_select_2.show()
-    
-    # # 鼠标事件
-    # def mousePressEvent(self, event):
-    #     if event.buttons() == Qt.LeftButton:  # 左键按下
-    #         print("单击鼠标左键")  # 响应测试语句
-    #     elif event.buttons() == Qt.RightButton:  # 右键按下
-    #         print("单击鼠标右键")  # 响应测试语句
-    #     elif event.buttons() == Qt.MidButton:  # 中键按下
-    #         print("单击鼠标中键")  # 响应测试语句
-    #     elif event.buttons() == Qt.LeftButton | Qt.RightButton:  # 左右键同时按下
-    #         print("单击鼠标左右键")  # 响应测试语句
-    #     elif event.buttons() == Qt.LeftButton | Qt.MidButton:  # 左中键同时按下
-    #         print("单击鼠标左中键")  # 响应测试语句
-    #     elif event.buttons() == Qt.MidButton | Qt.RightButton:  # 右中键同时按下
-    #         print("单击鼠标右中键")  # 响应测试语句
-    #     elif event.buttons() == Qt.LeftButton | Qt.MidButton | Qt.RightButton:  # 左中右键同时按下
-    #         print("单击鼠标左中右键")  # 响应测试语句
+
+    # 键盘点击
+    def click_key(self, Key):
+        if self.menu_select_2 and hasattr(self.menu_select_2, "click_key"):
+            self.menu_select_2.click_key(Key)
+        pass
+        
