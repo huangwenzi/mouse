@@ -60,7 +60,7 @@ class MainView(QtWidgets.QMainWindow):
     # 清除其他菜单选项
     def clear_select(self):
         if self.menu_select_1:
-            view_lib.reset_button_select(self.menu_select_1)
+            view_lib.reset_select_color(self.menu_select_1)
         if self.menu_select_2:
             self.menu_select_2.close_view()
         self.menu_select_1 = None
@@ -71,7 +71,7 @@ class MainView(QtWidgets.QMainWindow):
         # 清除其他菜单选项
         self.clear_select()
         # 设置功能选中
-        view_lib.button_select(self.trajectory_button)
+        view_lib.set_select_color(self.trajectory_button)
         
         self.menu_select_1 = self.trajectory_button
         # 弹出二级菜单

@@ -8,9 +8,8 @@ button_select_color = "#87CEFA"
 # 尺寸
 # 按钮大小
 button_size = [100, 30]
-
-
-
+# 任务栏h偏移
+taskbar_y_deviation = 50
 
 
 

@@ -3,49 +3,33 @@ import PyQt5.QtCore as QtCore
 import PyQt5.QtGui as QtGui
 
 import cfg.game as game_cfg
+import lib.view_lib as view_lib
+import view.h_list_view as h_list_view
+import view.h_row_view as h_row_view
 
 # 轨迹默认配置视图
-class TrajectoryChangeView(QtWidgets.QLabel):
+class TrajectoryChangeView(h_list_view.HListLabel):
     select_trajectory_id = 0
     def __init__(self, *args):
         super(TrajectoryChangeView, self).__init__(*args)
-        self.resize(game_cfg.button_size[0], game_cfg.button_size[1]*4)
-        # 设置背景色
-        self.setAutoFillBackground(True)
-        palette_white = QtGui.QPalette()
-        palette_white.setColor(QtGui.QPalette.Window, QtGui.QColor(game_cfg.def_color))
-        self.setPalette(palette_white)
         # 上方标题
-        def_size_w = game_cfg.button_size[0]/2
-        self.label_loop = QtWidgets.QLabel("轨迹修改", self)
-        self.label_loop.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_loop.resize(game_cfg.button_size[0], game_cfg.button_size[1])
-        self.label_loop.move(0,0)
-        
+        self.label_title = QtWidgets.QLabel("轨迹修改", self)
+        self.label_title.setAlignment(QtCore.Qt.AlignCenter)
+        view_lib.set_background_color(self.label_title)
         # 轨迹编号
-        def_size_w = game_cfg.button_size[0]/2
-        self.label_id = QtWidgets.QLabel("轨迹编号", self)
-        self.label_id.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_id.resize(def_size_w, game_cfg.button_size[1])
-        self.label_id.move(0,game_cfg.button_size[1])
-        self.edit_id = QtWidgets.QLineEdit("0", self)
-        self.edit_id.setAlignment(QtCore.Qt.AlignCenter)
-        self.edit_id.resize(def_size_w, game_cfg.button_size[1])
-        self.edit_id.move(def_size_w,game_cfg.button_size[1])
-        # 默认移动时间
-        self.label_move_time = QtWidgets.QLabel("移动时间", self)
-        self.label_move_time.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_move_time.resize(def_size_w, game_cfg.button_size[1])
-        self.label_move_time.move(0, game_cfg.button_size[1]*2)
-        self.edit_move_time = QtWidgets.QLineEdit("1", self)
-        self.edit_move_time.setAlignment(QtCore.Qt.AlignCenter)
-        self.edit_move_time.resize(def_size_w, game_cfg.button_size[1])
-        self.edit_move_time.move(def_size_w,game_cfg.button_size[1]*2)
+        self.id_label_edit = h_row_view.HLabelEdit(self)
+        self.id_label_edit.init(game_cfg.button_size[0],game_cfg.button_size[1],"轨迹编号","0")
+        # 移动时间
+        self.move_time_label_edit = h_row_view.HLabelEdit(self)
+        self.move_time_label_edit.init(game_cfg.button_size[0],game_cfg.button_size[1],"移动时间","1")
         # 确定修改
         self.button_change = QtWidgets.QPushButton("确定修改", self)
-        self.button_change.resize(game_cfg.button_size[0], game_cfg.button_size[1])
-        self.button_change.move(0, game_cfg.button_size[1]*3)
         self.button_change.clicked.connect(self.click_change)
+        # 添加到菜单列表
+        self.add_view(self.label_title)
+        self.add_view(self.id_label_edit)
+        self.add_view(self.move_time_label_edit)
+        self.add_view(self.button_change)
         
 
     # 点击确定修改
@@ -56,8 +40,8 @@ class TrajectoryChangeView(QtWidgets.QLabel):
     # 设置选中的轨迹点
     def set_select_trajectory(self, trajectory_obj):
         self.select_trajectory_id = trajectory_obj.trajectory_id
-        self.edit_id.setText(str(trajectory_obj.trajectory_id))
-        self.edit_move_time.setText(str(trajectory_obj.wait_time))
+        self.id_label_edit.setText(str(trajectory_obj.trajectory_id))
+        self.move_time_label_edit.setText(str(trajectory_obj.move_time))
 
             
         
