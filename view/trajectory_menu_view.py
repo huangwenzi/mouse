@@ -20,6 +20,8 @@ class Enum(object):
     menu_type_del = 3       # 删除轨迹
     menu_type_plan = 4      # 重排编号
     menu_type_change = 5    # 修改轨迹
+    menu_type_load = 6      # 加载轨迹
+    menu_type_save = 7      # 保存轨迹
     # 运行状态
     menu_run_start = 1      # 正常运行
     menu_run_stop = 2       # 停止运行
@@ -167,10 +169,14 @@ class TrajectoryMenuView(QtWidgets.QLabel):
     
     # 加载轨迹
     def click_load(self):
+        # 设置功能选中
+        self.set_select_menu_1(Enum.menu_type_load)
+        view_lib.set_select_color(self.button_load)
+        
         util_lib.create_dir("./trajectory_file")
         path = QtWidgets.QFileDialog.getOpenFileNames(self,'加载轨迹',"./trajectory_file", "json Files(*.json)")
         # filename = QtWidgets.QFileDialog.getOpenFileNames(self,'加载轨迹',"./trajectory_file", "All Files(*);;json Files(*.json)")
-        if path[0][0] == "":
+        if not path or len(path) < 1 or len(path[0]) < 1 or path[0][0] == "":
             return
         else:
             # 读取文件
@@ -205,6 +211,10 @@ class TrajectoryMenuView(QtWidgets.QLabel):
         
     # 保存轨迹
     def click_save(self):
+        # 设置功能选中
+        self.set_select_menu_1(Enum.menu_type_save)
+        view_lib.set_select_color(self.button_save)
+        
         util_lib.create_dir("./trajectory_file")
         path = "./trajectory_file/%s.json"%(time.strftime('%Y-%m-%d_%H-%M-%S'))
         path = QtWidgets.QFileDialog.getSaveFileName(self, '选择保存路径', path, 'json(*.json)')
@@ -295,6 +305,12 @@ class TrajectoryMenuView(QtWidgets.QLabel):
             # 修改轨迹
             view_lib.reset_select_color(self.button_change)
             self.trajectory_change_view.close()
+        elif self.select_menu_1 == Enum.menu_type_load:
+            # 修改轨迹
+            view_lib.reset_select_color(self.button_load)
+        elif self.select_menu_1 == Enum.menu_type_save:
+            # 修改轨迹
+            view_lib.reset_select_color(self.button_save)
         else:
             pass
         
