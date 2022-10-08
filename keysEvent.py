@@ -1,24 +1,24 @@
 from pynput.mouse import Button, Controller
-mouse = Controller()
 import pyautogui
 import time
+
+mouse = Controller()
 
 # 一些全局定义
 # 辅助键，标识需要特殊处理的事件
 AUXILIARY_KEY = "0"
 
 # 这里返回值的枚举
-class KeysRet():
+class KeysRet:
     isFun = 0
     noFun = 1
     isExit = 2
 
-# 这里处理键盘按下的事件
-class KeysEvent():
 
+# 这里处理键盘按下的事件
+class KeysEvent:
     def __init__(self):
         pass
-
 
     # 按下键
     # data : 用户数据
@@ -37,7 +37,7 @@ class KeysEvent():
                 data.keyDown.append(key.char)
                 # print(data.keyDown)
         # 特殊键先不处理
-        else :
+        else:
             return ret
 
         # 如果快捷键功能没有开启，则退出
@@ -47,7 +47,17 @@ class KeysEvent():
         # 执行快捷键操作
         char = key.char
         # 鼠标移动到保存的位置
-        if char == "1" or char == "2" or char == "3" or char == "4" or char == "5" or char == "6" or char == "7" or char == "8" or char == "9":
+        if (
+            char == "1"
+            or char == "2"
+            or char == "3"
+            or char == "4"
+            or char == "5"
+            or char == "6"
+            or char == "7"
+            or char == "8"
+            or char == "9"
+        ):
             # 这个位置是否有保存过位置
             if char in data.postion.keys():
                 postion = data.postion[char]
@@ -56,7 +66,6 @@ class KeysEvent():
                 # print("move,X:" + str(postion[0]) + "Y:" + str(postion[1]) )
 
         return ret
-
 
     # 放开键
     # data : 用户数据
@@ -67,7 +76,6 @@ class KeysEvent():
             if key.char in data.keyDown:
                 data.keyDown.remove(key.char)
                 # print(data.keyDown)
-
 
     # 检查是不是功能键
     # data : 用户数据
@@ -86,19 +94,31 @@ class KeysEvent():
                 # 取反开启的标志位
                 data.openFlag = not data.openFlag
             # 保存快捷点
-            elif char == "1" or char == "2" or char == "3" or char == "4" or char == "5" or char == "6" or char == "7" or char == "8" or char == "9":
+            elif (
+                char == "1"
+                or char == "2"
+                or char == "3"
+                or char == "4"
+                or char == "5"
+                or char == "6"
+                or char == "7"
+                or char == "8"
+                or char == "9"
+            ):
                 data.postion[char] = mouse.position
                 print(data.postion)
             # 截图
             elif char == "+":
                 # 用当前时间做名字保存
-                name = time.strftime("screenshot\%Y-%m-%d_%H-%M-%S.png", time.localtime())
+                name = time.strftime(
+                    "screenshot\%Y-%m-%d_%H-%M-%S.png", time.localtime()
+                )
                 pyautogui.screenshot(name)
             # 退出
             elif char == "-":
                 return keysRet.isExit
             # 不存在的功能键就返回false
-            else :
+            else:
                 return keysRet.noFun
 
         return keysRet.isFun

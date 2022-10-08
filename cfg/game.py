@@ -1,4 +1,3 @@
-
 # 颜色
 # 默认颜色
 def_color = "#f0f0f0"
@@ -10,14 +9,3 @@ button_select_color = "#87CEFA"
 button_size = [100, 30]
 # 任务栏h偏移
 taskbar_y_deviation = 50
-
-
-
-
-
-
-
-
-
-
-

@@ -17,25 +17,27 @@ class TrajectoryCfgView(h_list_view.HListLabel):
         view_lib.set_background_color(self.label_title)
         # 轨迹循环
         self.loop_label_button = h_row_view.HLabelLoopButton(self)
-        self.loop_label_button.init(game_cfg.button_size[0],game_cfg.button_size[1],"轨迹循环","否",["否", "是"])
+        self.loop_label_button.init(
+            game_cfg.button_size[0], game_cfg.button_size[1], "轨迹循环", "否", ["否", "是"]
+        )
         # 默认移动时间
         self.move_time_label_edit = h_row_view.HLabelEdit(self)
-        self.move_time_label_edit.init(game_cfg.button_size[0],game_cfg.button_size[1],"移动时间","1")
+        self.move_time_label_edit.init(
+            game_cfg.button_size[0], game_cfg.button_size[1], "移动时间", "1"
+        )
         # 轨迹穿透
         self.penetrate_label_button = h_row_view.HLabelLoopButton(self)
-        self.penetrate_label_button.init(game_cfg.button_size[0],game_cfg.button_size[1],"轨迹穿透","否",["否", "是"])
+        self.penetrate_label_button.init(
+            game_cfg.button_size[0], game_cfg.button_size[1], "轨迹穿透", "否", ["否", "是"]
+        )
         # 耗时跟随
         self.time_follow_label_button = h_row_view.HLabelLoopButton(self)
-        self.time_follow_label_button.init(game_cfg.button_size[0],game_cfg.button_size[1],"耗时跟随","否",["否", "是"])
+        self.time_follow_label_button.init(
+            game_cfg.button_size[0], game_cfg.button_size[1], "耗时跟随", "否", ["否", "是"]
+        )
         # 添加到菜单列表
         self.add_view(self.label_title)
         self.add_view(self.loop_label_button)
         self.add_view(self.move_time_label_edit)
         self.add_view(self.penetrate_label_button)
         self.add_view(self.time_follow_label_button)
-
-        
-
-
-
-

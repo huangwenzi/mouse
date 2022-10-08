@@ -1,8 +1,9 @@
 from pynput import keyboard
 import keysEvent as keysEventMd
+import dataMgr as dataMgrMd
+
 keysEvent = keysEventMd.keysEvent
 keysRet = keysEventMd.keysRet
-import dataMgr as dataMgrMd
 
 # 数据管理的类
 dataMgr = dataMgrMd.DataMgr()
@@ -14,14 +15,14 @@ def on_press(key):
     if ret == keysRet.isExit:
         return False
 
+
 # 键盘弹起
 def on_release(key):
     keysEvent.keyUp(dataMgr, key)
 
+
 # Collect events until released
-with keyboard.Listener(
-        on_press=on_press,
-        on_release=on_release) as listener:
+with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
     listener.join()
 
 # 使用方法
